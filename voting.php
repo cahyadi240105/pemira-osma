@@ -1,3 +1,4 @@
+<?php include 'security/title.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +6,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Skydash Admin</title>
+    <title><?= $title ?></title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="vendors/feather/feather.css">
     <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
@@ -67,44 +68,9 @@
         </nav>
         <!-- partial -->
         <div class="container-fluid page-body-wrapper">
-            
+
             <!-- partial:../../partials/_sidebar.html -->
-            <nav class="sidebar sidebar-offcanvas" id="sidebar">
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">
-                            <i class="icon-grid menu-icon"></i>
-                            <span class="menu-title">Dashboard</span>
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" href="voting.html">
-                            <i class="mdi mdi-ballot-outline menu-icon"></i>
-                            <span class="menu-title">Voting</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="kandidat.html">
-                            <i class="mdi mdi-account-group-outline menu-icon"></i>
-                            <span class="menu-title">Kelola Kandidat</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="pengguna.html">
-                            <i class="mdi mdi-account-outline menu-icon"></i>
-                            <span class="menu-title">Kelola Pengguna</span>
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" href="login.html">
-                            <i class="ti-power-off menu-icon"></i>
-                            <span class="menu-title">Logout</span>
-                        </a>
-                    </li>
-                </ul>  
-            </nav>
+            <?php include 'partials/_sidebar.php'; ?>
             <!-- partial -->
             <div class="main-panel">
                 <div class="content-wrapper">
@@ -217,7 +183,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
                 <!-- content-wrapper ends -->

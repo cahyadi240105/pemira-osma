@@ -1,3 +1,7 @@
+<?php
+require_once 'security/config.php';
+include 'security/title.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +9,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Skydash Admin</title>
+  <title><?= $title; ?></title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="vendors/feather/feather.css">
   <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
@@ -21,15 +25,16 @@
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
   <!-- icon -->
-  <link rel="stylesheet" href="../../vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css">
 </head>
+
 <body>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="images/logo.svg" class="mr-2" alt="logo"/></a>
-        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo"/></a>
+        <a class="navbar-brand brand-logo mr-5 <?= $current_page == 'index.php' ? 'active' : ''; ?>" href="index.php"><img src="images/logo.svg" class="mr-2" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini <?= $current_page == 'index.php' ? 'active' : ''; ?>" href="index.php"><img src="images/logo-mini.svg" alt="logo" /></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -50,7 +55,7 @@
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="images/faces/face28.jpg" alt="profile"/>
+              <img src="images/faces/face28.jpg" alt="profile" />
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               <a class="dropdown-item">
@@ -68,40 +73,7 @@
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_sidebar.html -->
-      <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">
-              <i class="icon-grid menu-icon"></i>
-              <span class="menu-title">Dashboard</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="voting.html">
-              <i class="mdi mdi-ballot-outline menu-icon"></i>
-              <span class="menu-title">Voting</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="kandidat.html">
-              <i class="mdi mdi-account-group-outline menu-icon"></i>
-              <span class="menu-title">Kelola Kandidat</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="pengguna.html">
-              <i class="mdi mdi-account-outline menu-icon"></i>
-              <span class="menu-title">Kelola Pengguna</span>
-            </a> 
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="login.html">
-              <i class="ti-power-off menu-icon"></i>
-              <span class="menu-title">Logout</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <?php include 'partials/_sidebar.php'; ?>
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
@@ -121,18 +93,18 @@
                 <div class="col-md-6 mb-4 stretch-card transparent">
                   <div class="card card-tale">
                     <div class="card-body">
-                      <p class="mb-4">Today’s Bookings</p>
-                      <p class="fs-30 mb-2">4006</p>
-                      <p>10.00% (30 days)</p>
+                      <p class="mb-4">Total Pemilih Terdaftar</p>
+                      <p class="fs-30 mb-2"> </p>
+                      <p>Data semua pemilih</p>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-6 mb-4 stretch-card transparent">
                   <div class="card card-dark-blue">
                     <div class="card-body">
-                      <p class="mb-4">Total Bookings</p>
-                      <p class="fs-30 mb-2">61344</p>
-                      <p>22.00% (30 days)</p>
+                      <p class="mb-4">Total Sudah Memilih</p>
+                      <p class="fs-30 mb-2"> </p>
+                      <p>Jumlah yang sudah memberikan suara</p>
                     </div>
                   </div>
                 </div>
@@ -141,23 +113,45 @@
                 <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
                   <div class="card card-light-blue">
                     <div class="card-body">
-                      <p class="mb-4">Number of Meetings</p>
-                      <p class="fs-30 mb-2">34040</p>
-                      <p>2.00% (30 days)</p>
+                      <p class="mb-4">Belum Memilih</p>
+                      <p class="fs-30 mb-2"> </p>
+                      <p>Masih menunggu memilih</p>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-6 stretch-card transparent">
                   <div class="card card-light-danger">
                     <div class="card-body">
-                      <p class="mb-4">Number of Clients</p>
-                      <p class="fs-30 mb-2">47033</p>
-                      <p>0.22% (30 days)</p>
+                      <p class="mb-4">Jumlah Kandidat</p>
+                      <p class="fs-30 mb-2"> </p>
+                      <p>Calon yang tersedia</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-md-6 mb-4 stretch-card transparent">
+                  <div class="card card-light-warning bg-warning">
+                    <div class="card-body">
+                      <p class="mb-4">Total Suara Masuk</p>
+                      <p class="fs-30 mb-2"> </p>
+                      <p>Akumulasi semua suara</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4 stretch-card transparent">
+                  <div class="card card-light-success bg-success">
+                    <div class="card-body">
+                      <p class="mb-4">Persentase Partisipasi</p>
+                      <p class="fs-30 mb-2"> </p>
+                      <p>Partisipasi pemilih</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+
+            <!-- Bagian Kanan: Pie Chart -->
             <div class="col-lg-6 grid-margin grid-margin-lg-0 stretch-card">
               <div class="card">
                 <div class="card-body">
@@ -167,6 +161,7 @@
               </div>
             </div>
           </div>
+
           <div class="row">
             <div class="col-md-12 grid-margin stretch-card mt-5">
               <div class="card">
@@ -178,43 +173,40 @@
                         <table id="example" class="display expandable-table" style="width:100%">
                           <thead>
                             <tr>
-                              <th>Quote#</th>
-                              <th>Product</th>
-                              <th>Business type</th>
-                              <th>Policy holder</th>
-                              <th>Premium</th>
-                              <th>Status</th>
-                              <th>Updated at</th>
-                              <th></th>
+                              <th>No</th>
+                              <th>Username</th>
+                              <th>Nama Lengkap</th>
+                              <th>Staus Vote</th>
+                             
                             </tr>
                           </thead>
                           <tbody>
-                             
+
                           </tbody>
-                      </table>
+                        </table>
                       </div>
                     </div>
                   </div>
-                  </div>
                 </div>
               </div>
+            </div>
           </div>
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021. Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
             <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
           </div>
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span> 
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span>
           </div>
-        </footer> 
+        </footer>
         <!-- partial -->
       </div>
       <!-- main-panel ends -->
-    </div>   
+    </div>
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
@@ -238,9 +230,10 @@
   <!-- endinject -->
   <!-- Custom js for this page-->
   <script src="js/dashboard.js"></script>
-  <script src="js/Chart.roundedBarCharts.js"></script>
   <!-- End custom js for this page-->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/chart.js"></script>
+  <script src="vendors/chart.js/Chart.min.js"></script>
   <!-- <script>
     const ctx = document.getElementById('pieChart').getContext('2d');
     new Chart(ctx, {
@@ -268,21 +261,6 @@
       }
     });
   </script> -->
-  <script src="vendors/js/vendor.bundle.base.js"></script>
-  <!-- endinject -->
-  <!-- Plugin js for this page -->
-  <script src="vendors/chart.js/Chart.min.js"></script>
-  <!-- End plugin js for this page -->
-  <!-- inject:js -->
-  <script src="js/off-canvas.js"></script>
-  <script src="js/hoverable-collapse.js"></script>
-  <script src="js/template.js"></script>
-  <script src="js/settings.js"></script>
-  <script src="js/todolist.js"></script>
-  <!-- endinject -->
-  <!-- Custom js for this page-->
-  <script src="js/chart.js"></script>
 </body>
 
 </html>
-
