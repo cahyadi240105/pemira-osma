@@ -1,4 +1,8 @@
-<?php include 'security/title.php'; ?>
+<?php 
+    include 'auth/title.php';
+    require_once 'auth/config.php';
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,6 +15,7 @@
     <link rel="stylesheet" href="vendors/feather/feather.css">
     <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
+    
     <!-- endinject -->
     <!-- Plugin css for this page -->
     <!-- End plugin css for this page -->
@@ -49,18 +54,7 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav navbar-nav-right">
-                    <li class="nav-item nav-profile dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                            <img src="images/faces/face28.jpg" alt="profile" />
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
-                            aria-labelledby="profileDropdown">
-                            <a class="dropdown-item">
-                                <i class="ti-power-off text-primary"></i>
-                                Logout
-                            </a>
-                        </div>
-                    </li>
+                    
                 </ul>
                 <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
                     data-toggle="offcanvas">
@@ -80,10 +74,14 @@
                         <div class="col-lg-12 grid-margin stretch-card mx-auto">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">Basic Table</h4>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h4 class="card-title mb-0">Data Pengguna</h4>
+                                        <a href="#" class="btn btn-primary">Tambah Pengguna</a>
+                                    </div>
                                     <p class="card-description">
-                                        Add class <code>.table</code>
+                                        <code></code>
                                     </p>
+
                                     <div class="table-responsive">
                                         <table class="table">
                                             <thead>
@@ -106,16 +104,7 @@
                 </div>
                 <!-- content-wrapper ends -->
                 <!-- partial:../../partials/_footer.html -->
-                <footer class="footer">
-                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.
-                            Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin
-                                template</a> from BootstrapDash.
-                            All rights reserved.</span>
-                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made
-                            with <i class="ti-heart text-danger ml-1"></i></span>
-                    </div>
-                </footer>
+               <?php include 'partials/_footer.php';?>
                 <!-- partial -->
             </div>
             <!-- main-panel ends -->

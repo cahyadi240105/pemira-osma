@@ -1,4 +1,8 @@
-<?php include 'security/title.php'; ?>
+<?php 
+    include 'auth/title.php';                  
+    require_once 'auth/config.php';
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,17 +52,7 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav navbar-nav-right">
-                    <li class="nav-item nav-profile dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                            <img src="images/faces/face28.jpg" alt="profile" />
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                            <a class="dropdown-item">
-                                <i class="ti-power-off text-primary"></i>
-                                Logout
-                            </a>
-                        </div>
-                    </li>
+                    
                 </ul>
                 <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
                     data-toggle="offcanvas">
@@ -75,129 +69,25 @@
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
-                        <div class="col-lg-6 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Basic Table</h4>
-                                    <p class="card-description">
-                                        Add class <code>.table</code>
-                                    </p>
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Profile</th>
-                                                    <th>VatNo.</th>
-                                                    <th>Created</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Jacob</td>
-                                                    <td>53275531</td>
-                                                    <td>12 May 2017</td>
-                                                    <td><label class="badge badge-danger">Pending</label></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Messsy</td>
-                                                    <td>53275532</td>
-                                                    <td>15 May 2017</td>
-                                                    <td><label class="badge badge-warning">In progress</label></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>John</td>
-                                                    <td>53275533</td>
-                                                    <td>14 May 2017</td>
-                                                    <td><label class="badge badge-info">Fixed</label></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Peter</td>
-                                                    <td>53275534</td>
-                                                    <td>16 May 2017</td>
-                                                    <td><label class="badge badge-success">Completed</label></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Dave</td>
-                                                    <td>53275535</td>
-                                                    <td>20 May 2017</td>
-                                                    <td><label class="badge badge-warning">In progress</label></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                        <?php for ($i = 0; $i < 2; $i++) : ?>
+                            <div class="col-lg-6 grid-margin stretch-card">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title"> Calon Kandidat</h4>
+                                        <img src="" alt="" srcset="">
+                                        <p class="card-text">Deskripsi singkat kandidat 1.</p>
+                                        <a href="#" class="btn btn-primary">Lihat Detail</a>
+                                        <a href="#" class="btn btn-success">Pilih</a>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Hoverable Table</h4>
-                                    <p class="card-description">
-                                        Add class <code>.table-hover</code>
-                                    </p>
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>User</th>
-                                                    <th>Product</th>
-                                                    <th>Sale</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Jacob</td>
-                                                    <td>Photoshop</td>
-                                                    <td class="text-danger"> 28.76% <i class="ti-arrow-down"></i></td>
-                                                    <td><label class="badge badge-danger">Pending</label></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Messsy</td>
-                                                    <td>Flash</td>
-                                                    <td class="text-danger"> 21.06% <i class="ti-arrow-down"></i></td>
-                                                    <td><label class="badge badge-warning">In progress</label></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>John</td>
-                                                    <td>Premier</td>
-                                                    <td class="text-danger"> 35.00% <i class="ti-arrow-down"></i></td>
-                                                    <td><label class="badge badge-info">Fixed</label></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Peter</td>
-                                                    <td>After effects</td>
-                                                    <td class="text-success"> 82.00% <i class="ti-arrow-up"></i></td>
-                                                    <td><label class="badge badge-success">Completed</label></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Dave</td>
-                                                    <td>53275535</td>
-                                                    <td class="text-success"> 98.05% <i class="ti-arrow-up"></i></td>
-                                                    <td><label class="badge badge-warning">In progress</label></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
+                            </div>
+                        <?php endfor ?>
                     </div>
                 </div>
                 <!-- content-wrapper ends -->
                 <!-- partial:../../partials/_footer.html -->
-                <footer class="footer">
-                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.
-                            Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin
-                                template</a> from BootstrapDash.
-                            All rights reserved.</span>
-                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made
-                            with <i class="ti-heart text-danger ml-1"></i></span>
-                    </div>
-                </footer>
+                <?php include 'partials/_footer.php';?>
                 <!-- partial -->
             </div>
             <!-- main-panel ends -->

@@ -1,3 +1,6 @@
+<?php 
+    require_once 'auth/function.php';
+?>
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
         <li class="nav-item">
@@ -12,6 +15,7 @@
                 <span class="menu-title">Voting</span>
             </a>
         </li>
+        <?php if(isAdmin()): ?>
         <li class="nav-item">
             <a class="nav-link <?= $current_page == 'kandidat.php' ? 'active' : ''; ?>" href="kandidat.php">
                 <i class="mdi mdi-account-group-outline menu-icon"></i>
@@ -24,8 +28,9 @@
                 <span class="menu-title">Kelola Pengguna</span>
             </a>
         </li>
+        <?php endif; ?>
         <li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="login.php">
                 <i class="ti-power-off menu-icon"></i>
                 <span class="menu-title">Logout</span>
             </a>

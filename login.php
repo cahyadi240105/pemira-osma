@@ -1,3 +1,25 @@
+<?php
+  require_once "auth/config.php";
+  session_start();
+  if(isset($_POST['login'])){
+    $username = $_POST['username'];
+    $pwd = $_POST['password'];
+
+    $qry = $pdo->prepare("SELECT * FROM users WHERE username = ? AND password = ?");
+    $qry -> execute([$username,$pwd]);
+
+    if($qry -> rowCount() == 1){
+      $data = $qry -> fetch(PDO::FETCH_ASSOC);
+      if($data['role'] == 'admin' || $data['role'] == 'user') {
+        $_SESSION['user'] = $data;
+        header('Location: index.php');
+        exit;
+     }else{
+      echo"Username dan Password Salah";
+    }
+  }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,17 +53,16 @@
               </div>
               <h4>Hello! let's get started</h4>
               <h6 class="font-weight-light">Sign in to continue.</h6>
-              <form class="pt-3">
+              <form class="pt-3" method="post" action="">
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Username">
+                  <input type="text" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Username" name="username" required>
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password">
+                  <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password" name="password" required>
                 </div>
                 <div class="mt-3">
-                  <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="index.html">SIGN IN</a>
+                  <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit" name="login">SIGN IN</button>
                 </div>
-          
               </form>
             </div>
           </div>

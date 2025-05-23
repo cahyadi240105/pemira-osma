@@ -1,6 +1,8 @@
 <?php
-require_once 'security/config.php';
-include 'security/title.php';
+require_once 'auth/config.php';
+include 'auth/title.php';
+require_once 'auth/function.php';
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,17 +55,7 @@ include 'security/title.php';
           </li>
         </ul>
         <ul class="navbar-nav navbar-nav-right">
-          <li class="nav-item nav-profile dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="images/faces/face28.jpg" alt="profile" />
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item">
-                <i class="ti-power-off text-primary"></i>
-                Logout
-              </a>
-            </div>
-          </li>
+
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
           <span class="icon-menu"></span>
@@ -82,75 +74,76 @@ include 'security/title.php';
               <div class="row">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
                   <h3 class="font-weight-bold">Welcome To Pemira - Osma</h3>
-                  <!-- <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span class="text-primary">3 unread alerts!</span></h6> -->
                 </div>
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 grid-margin transparent">
-              <div class="row">
-                <div class="col-md-6 mb-4 stretch-card transparent">
-                  <div class="card card-tale">
-                    <div class="card-body">
-                      <p class="mb-4">Total Pemilih Terdaftar</p>
-                      <p class="fs-30 mb-2"> </p>
-                      <p>Data semua pemilih</p>
+            <?php if (isAdmin()): ?>
+              <div class="col-md-6 grid-margin transparent">
+                <div class="row">
+                  <div class="col-md-6 mb-4 stretch-card transparent">
+                    <div class="card card-tale">
+                      <div class="card-body">
+                        <p class="mb-4">Total Pemilih Terdaftar</p>
+                        <p class="fs-30 mb-2"> </p>
+                        <p>Data semua pemilih</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-4 stretch-card transparent">
+                    <div class="card card-dark-blue">
+                      <div class="card-body">
+                        <p class="mb-4">Total Sudah Memilih</p>
+                        <p class="fs-30 mb-2"> </p>
+                        <p>Jumlah yang sudah memberikan suara</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6 mb-4 stretch-card transparent">
-                  <div class="card card-dark-blue">
-                    <div class="card-body">
-                      <p class="mb-4">Total Sudah Memilih</p>
-                      <p class="fs-30 mb-2"> </p>
-                      <p>Jumlah yang sudah memberikan suara</p>
+                <div class="row">
+                  <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
+                    <div class="card card-light-blue">
+                      <div class="card-body">
+                        <p class="mb-4">Belum Memilih</p>
+                        <p class="fs-30 mb-2"> </p>
+                        <p>Masih menunggu memilih</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 stretch-card transparent">
+                    <div class="card card-light-danger">
+                      <div class="card-body">
+                        <p class="mb-4">Jumlah Kandidat</p>
+                        <p class="fs-30 mb-2"> </p>
+                        <p>Calon yang tersedia</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-md-6 mb-4 stretch-card transparent">
+                    <div class="card card-light-warning bg-warning">
+                      <div class="card-body">
+                        <p class="mb-4">Total Suara Masuk</p>
+                        <p class="fs-30 mb-2"> </p>
+                        <p>Akumulasi semua suara</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-4 stretch-card transparent">
+                    <div class="card card-light-success bg-success">
+                      <div class="card-body">
+                        <p class="mb-4">Persentase Partisipasi</p>
+                        <p class="fs-30 mb-2"> </p>
+                        <p>Partisipasi pemilih</p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
-                  <div class="card card-light-blue">
-                    <div class="card-body">
-                      <p class="mb-4">Belum Memilih</p>
-                      <p class="fs-30 mb-2"> </p>
-                      <p>Masih menunggu memilih</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 stretch-card transparent">
-                  <div class="card card-light-danger">
-                    <div class="card-body">
-                      <p class="mb-4">Jumlah Kandidat</p>
-                      <p class="fs-30 mb-2"> </p>
-                      <p>Calon yang tersedia</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row mt-3">
-                <div class="col-md-6 mb-4 stretch-card transparent">
-                  <div class="card card-light-warning bg-warning">
-                    <div class="card-body">
-                      <p class="mb-4">Total Suara Masuk</p>
-                      <p class="fs-30 mb-2"> </p>
-                      <p>Akumulasi semua suara</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-4 stretch-card transparent">
-                  <div class="card card-light-success bg-success">
-                    <div class="card-body">
-                      <p class="mb-4">Persentase Partisipasi</p>
-                      <p class="fs-30 mb-2"> </p>
-                      <p>Partisipasi pemilih</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
 
+            <?php endif; ?>
             <!-- Bagian Kanan: Pie Chart -->
             <div class="col-lg-6 grid-margin grid-margin-lg-0 stretch-card">
               <div class="card">
@@ -161,7 +154,7 @@ include 'security/title.php';
               </div>
             </div>
           </div>
-
+          <?php if(isAdmin()):?>
           <div class="row">
             <div class="col-md-12 grid-margin stretch-card mt-5">
               <div class="card">
@@ -177,7 +170,7 @@ include 'security/title.php';
                               <th>Username</th>
                               <th>Nama Lengkap</th>
                               <th>Staus Vote</th>
-                             
+
                             </tr>
                           </thead>
                           <tbody>
@@ -191,18 +184,11 @@ include 'security/title.php';
               </div>
             </div>
           </div>
+          <?php endif;?>
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021. Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
-          </div>
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span>
-          </div>
-        </footer>
+        <?php include 'partials/_footer.php' ?>
         <!-- partial -->
       </div>
       <!-- main-panel ends -->
