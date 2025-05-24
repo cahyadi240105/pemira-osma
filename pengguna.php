@@ -1,7 +1,7 @@
-<?php 
-    include 'auth/title.php';
-    require_once 'auth/config.php';
-    session_start();
+<?php
+include 'auth/title.php';
+require_once 'auth/config.php';
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="vendors/feather/feather.css">
     <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
-    
+
     <!-- endinject -->
     <!-- Plugin css for this page -->
     <!-- End plugin css for this page -->
@@ -24,6 +24,7 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="images/favicon.png" />
     <link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
@@ -54,7 +55,7 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav navbar-nav-right">
-                    
+
                 </ul>
                 <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
                     data-toggle="offcanvas">
@@ -76,7 +77,15 @@
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <h4 class="card-title mb-0">Data Pengguna</h4>
-                                        <a href="#" class="btn btn-primary">Tambah Pengguna</a>
+                                        <div class="d-flex">
+                                            <a href="#" class="btn btn-primary mr-2">
+                                                <i class="fa-solid fa-user-plus"></i>
+                                                Tambah Pengguna
+                                            </a>
+                                            <a href="#" class="btn btn-success">
+                                                <i class="fa-solid fa-file-import"></i> Import Excel
+                                            </a>
+                                        </div>
                                     </div>
                                     <p class="card-description">
                                         <code></code>
@@ -86,14 +95,16 @@
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>Profile</th>
-                                                    <th>VatNo.</th>
-                                                    <th>Created</th>
+                                                    <th>No</th>
+                                                    <th>Username.</th>
+                                                    <th>Nama Lengkap</th>
                                                     <th>Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr></tr>
+                                                <tr>
+                                                    
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -104,7 +115,7 @@
                 </div>
                 <!-- content-wrapper ends -->
                 <!-- partial:../../partials/_footer.html -->
-               <?php include 'partials/_footer.php';?>
+                <?php include 'partials/_footer.php'; ?>
                 <!-- partial -->
             </div>
             <!-- main-panel ends -->

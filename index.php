@@ -1,8 +1,17 @@
 <?php
-require_once 'auth/config.php';
-include 'auth/title.php';
-require_once 'auth/function.php';
-session_start();
+  // memanggil folder auth
+  require_once 'auth/config.php';
+  include 'auth/title.php';
+  require_once 'auth/function.php';
+  session_start();
+
+  $totalPemilih = countWhere($pdo, 'users', 'role', 'user');
+  $totalSudahMemilih = countWhere($pdo, 'users', 'role', 'status_vote', 'sudah');
+  $totalBelumMemilih = countWhere($pdo, 'users', 'role', 'user', 'status_vote', 'belum');
+  $totalKandidat = countRows($pdo, 'calon');
+  $totalSuaraMasuk = countRows($pdo, 'vote_logs');
+
+  $partisipasi = $totalPemilih > 0 ? round(($totalSudahMemilih / $totalPemilih) * 100, 2) : 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -86,7 +95,7 @@ session_start();
                     <div class="card card-tale">
                       <div class="card-body">
                         <p class="mb-4">Total Pemilih Terdaftar</p>
-                        <p class="fs-30 mb-2"> </p>
+                        <p class="fs-30 mb-2"><?= $totalPemilih;?> </p>
                         <p>Data semua pemilih</p>
                       </div>
                     </div>
@@ -95,7 +104,7 @@ session_start();
                     <div class="card card-dark-blue">
                       <div class="card-body">
                         <p class="mb-4">Total Sudah Memilih</p>
-                        <p class="fs-30 mb-2"> </p>
+                        <p class="fs-30 mb-2"> <?= $totalSudahMemilih;?> </p>
                         <p>Jumlah yang sudah memberikan suara</p>
                       </div>
                     </div>
@@ -106,7 +115,7 @@ session_start();
                     <div class="card card-light-blue">
                       <div class="card-body">
                         <p class="mb-4">Belum Memilih</p>
-                        <p class="fs-30 mb-2"> </p>
+                        <p class="fs-30 mb-2"><?= $totalBelumMemilih ;?></p>
                         <p>Masih menunggu memilih</p>
                       </div>
                     </div>
@@ -115,7 +124,7 @@ session_start();
                     <div class="card card-light-danger">
                       <div class="card-body">
                         <p class="mb-4">Jumlah Kandidat</p>
-                        <p class="fs-30 mb-2"> </p>
+                        <p class="fs-30 mb-2"><?= $totalKandidat ;?> </p>
                         <p>Calon yang tersedia</p>
                       </div>
                     </div>
@@ -126,7 +135,7 @@ session_start();
                     <div class="card card-light-warning bg-warning">
                       <div class="card-body">
                         <p class="mb-4">Total Suara Masuk</p>
-                        <p class="fs-30 mb-2"> </p>
+                        <p class="fs-30 mb-2"> <?= $totalSuaraMasuk ;?> </p>
                         <p>Akumulasi semua suara</p>
                       </div>
                     </div>
@@ -135,7 +144,7 @@ session_start();
                     <div class="card card-light-success bg-success">
                       <div class="card-body">
                         <p class="mb-4">Persentase Partisipasi</p>
-                        <p class="fs-30 mb-2"> </p>
+                        <p class="fs-30 mb-2"><?= $partisipasi; ?> </p>
                         <p>Partisipasi pemilih</p>
                       </div>
                     </div>
@@ -154,37 +163,7 @@ session_start();
               </div>
             </div>
           </div>
-          <?php if(isAdmin()):?>
-          <div class="row">
-            <div class="col-md-12 grid-margin stretch-card mt-5">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title">Advanced Table</p>
-                  <div class="row">
-                    <div class="col-12">
-                      <div class="table-responsive">
-                        <table id="example" class="display expandable-table" style="width:100%">
-                          <thead>
-                            <tr>
-                              <th>No</th>
-                              <th>Username</th>
-                              <th>Nama Lengkap</th>
-                              <th>Staus Vote</th>
-
-                            </tr>
-                          </thead>
-                          <tbody>
-
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <?php endif;?>
+          
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->

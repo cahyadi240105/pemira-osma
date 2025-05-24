@@ -1,4 +1,4 @@
-<?php 
+<?php
     include 'auth/title.php';
     require_once 'auth/config.php';
     session_start();
@@ -23,6 +23,7 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="images/favicon.png" />
     <link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
@@ -53,7 +54,7 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav navbar-nav-right">
-                    
+
                 </ul>
                 <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
                     data-toggle="offcanvas">
@@ -75,7 +76,9 @@
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <h4 class="card-title mb-0">Data Kandidat</h4>
-                                        <a href="#" class="btn btn-primary">Tambah Kandidat</a>
+                                        <a href="#" class="btn btn-primary">
+                                            <i class="fa-solid fa-user-plus me-2"></i> Tambah Kandidat
+                                        </a>
                                     </div>
                                     <p class="card-description">
                                         <code></code>
@@ -85,10 +88,12 @@
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>Profile</th>
-                                                    <th>VatNo.</th>
-                                                    <th>Created</th>
-                                                    <th>Status</th>
+                                                    <th>No.</th>
+                                                    <th>No Calon.</th>
+                                                    <th>Nama Calon</th>
+                                                    <th>Foto</th>
+                                                    <th>Visi</th>
+                                                    <th>Misi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -103,7 +108,7 @@
                 </div>
                 <!-- content-wrapper ends -->
                 <!-- partial:../../partials/_footer.html -->
-                <?php include 'partials/_footer.php';?>
+                <?php include 'partials/_footer.php'; ?>
                 <!-- partial -->
             </div>
             <!-- main-panel ends -->
