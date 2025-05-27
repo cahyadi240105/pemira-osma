@@ -65,7 +65,3 @@
 5. Jalankan di server lokal seperti XAMPP atau Laragon.
 
 ---
-
-### 👥 Kontributor
-
-* **Cahyadi Prasetyo** – *Fullstack*
