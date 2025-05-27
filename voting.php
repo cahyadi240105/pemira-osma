@@ -1,7 +1,12 @@
-<?php 
-    include 'auth/title.php';                  
-    require_once 'auth/config.php';
-    session_start();
+<?php
+include 'auth/title.php';
+require_once 'auth/config.php';
+session_start();
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit;
+}
+$calon = $pdo->query("SELECT * FROM calon")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,7 +57,7 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav navbar-nav-right">
-                    
+
                 </ul>
                 <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
                     data-toggle="offcanvas">
@@ -69,25 +74,90 @@
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
-                        <?php for ($i = 0; $i < 2; $i++) : ?>
-                            <div class="col-lg-6 grid-margin stretch-card">
-                                <div class="card">
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title"> Calon Kandidat</h4>
-                                        <img src="" alt="" srcset="">
-                                        <p class="card-text">Deskripsi singkat kandidat 1.</p>
-                                        <a href="#" class="btn btn-primary">Lihat Detail</a>
-                                        <a href="#" class="btn btn-success">Pilih</a>
+                        <?php
+                        $id_user = $_SESSION['user']['id_user'];
+                        $vote_stmt = $pdo->query("SELECT id_calon FROM vote_logs WHERE id_user = $id_user");
+                        $already_voted = $vote_stmt->fetchColumn(); 
+                        ?>
+
+                        <?php if (!empty($calon)) : ?>
+                            <?php foreach ($calon as $r) : ?>
+                                <div class="col-lg-6 grid-margin stretch-card">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <h4 class="card-title">Calon Kandidat <?= $r['no_calon']; ?></h4>
+                                            <img src="<?= ('images/' . $r['foto']); ?>" alt="Foto Calon" class="img-fluid mb-3" style="max-height:200px;">
+                                            <p class="card-text"><?= $r['nama_calon']; ?></p>
+                                            <?php if (isset($_SESSION['user']) && $_SESSION['user']['role'] !== 'admin'): ?>
+                                                <a href="#" class="btn btn-primary " data-toggle="modal" data-target="#modalVisiMisi<?= $r['id_calon']; ?>">Lihat Visi & Misi</a>
+                                                
+                                                <?php if ($already_voted): ?>
+                                                    <button class="btn btn-secondary" disabled>Sudah Memilih</button>
+                                                <?php else: ?>
+                                                <a href="pilih.php?id=<?= $r['id_calon']; ?>" class="btn btn-success">Pilih</a>
+                                            <?php endif; ?>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
                                 </div>
-
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <div class="d-flex justify-content-center align-items-center col-12" style="min-height: 50vh;">
+                                <div class="card text-center" style="width: 100%; max-width: 500px;">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Belum Masuk Musim Pemira</h4>
+                                        <p class="card-text">Saat ini belum ada calon yang terdaftar. Silakan cek kembali nanti.</p>
+                                    </div>
+                                </div>
                             </div>
-                        <?php endfor ?>
+                        <?php endif; ?>
+                        <?php foreach ($calon as $r) : ?>
+                            <div class="modal fade" id="modalVisiMisi<?= $r['id_calon']; ?>" tabindex="-1" role="dialog" aria-labelledby="modalVisiMisiLabel<?= $r['id_calon']; ?>" aria-hidden="true">
+                                <div class="modal-dialog  modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-info text-white">
+                                            <h5 class="modal-title" id="modalVisiMisiLabel<?= $r['id_calon']; ?>">
+                                                Visi & Misi - Calon Nomor <?= $r['no_calon']; ?>
+                                            </h5>
+                                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Tutup">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <h6><strong>Nama:</strong> <?= $r['nama_calon']; ?></h6>
+                                            <hr>
+                                            <h6><strong>Visi:</strong></h6>
+                                            <p><?= $r['visi']; ?></p>
+                                            <h6><strong>Misi:</strong></h6>
+                                            <p><?= $r['misi']; ?></p>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                                <i class="fas fa-times"></i> Tutup
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                        <?php if (isset($_GET['status'])): ?>
+                            <div class="alert alert-info ml-4">
+                                <?php
+                                if ($_GET['status'] == 'berhasil_memilih') {
+                                    echo "Pilihan Anda telah disimpan.";
+                                } elseif ($_GET['status'] == 'sudah_memilih') {
+                                    echo "Anda sudah memilih. Setiap user hanya dapat memilih satu kali.";
+                                }
+                                ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <!-- content-wrapper ends -->
                 <!-- partial:../../partials/_footer.html -->
-                <?php include 'partials/_footer.php';?>
+                <?php include 'partials/_footer.php'; ?>
                 <!-- partial -->
             </div>
             <!-- main-panel ends -->

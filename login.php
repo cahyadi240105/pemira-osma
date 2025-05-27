@@ -1,25 +1,30 @@
-<?php
+  <?php
   require_once "auth/config.php";
   session_start();
-  if(isset($_POST['login'])){
+
+  $error = '';
+
+  if (isset($_POST['login'])) {
     $username = $_POST['username'];
     $pwd = $_POST['password'];
 
-    $qry = $pdo->prepare("SELECT * FROM users WHERE username = ? AND password = ?");
-    $qry -> execute([$username,$pwd]);
+    $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$pwd'";
+    $qry = $pdo->query($sql);
 
-    if($qry -> rowCount() == 1){
-      $data = $qry -> fetch(PDO::FETCH_ASSOC);
-      if($data['role'] == 'admin' || $data['role'] == 'user') {
+    if ($qry->rowCount() == 1) {
+      $data = $qry->fetch(PDO::FETCH_ASSOC);
+      if ($data['role'] == 'admin' || $data['role'] == 'user') {
         $_SESSION['user'] = $data;
         header('Location: index.php');
         exit;
-     }else{
-      echo"Username dan Password Salah";
+      } else {
+        $error = 'Username dan Password Salah';
+      }
+    } else {
+      $error = 'Username dan Password Salah';
     }
   }
-}
-?>
+  ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,16 +54,22 @@
           <div class="col-lg-4 mx-auto">
             <div class="auth-form-light text-left py-5 px-4 px-sm-5">
               <div class="brand-logo">
-                <img src="images/logo.svg" alt="logo">
+                <img src="logo web/3.png" alt="logo">
               </div>
               <h4>Hello! let's get started</h4>
               <h6 class="font-weight-light">Sign in to continue.</h6>
+              <?php if (!empty($error)): ?>
+                <div class="alert alert-danger mt-3" role="alert">
+                  <?= htmlspecialchars($error); ?>
+                </div>
+              <?php endif; ?>
+
               <form class="pt-3" method="post" action="">
                 <div class="form-group">
-                  <input type="text" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Username" name="username" required>
+                  <input type="text" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Username" name="username">
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password" name="password" required>
+                  <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password" name="password">
                 </div>
                 <div class="mt-3">
                   <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit" name="login">SIGN IN</button>

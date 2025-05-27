@@ -30,7 +30,7 @@
         </li>
         <?php endif; ?>
         <li class="nav-item">
-            <a class="nav-link" href="login.php">
+            <a class="nav-link" href="logout.php">
                 <i class="ti-power-off menu-icon"></i>
                 <span class="menu-title">Logout</span>
             </a>

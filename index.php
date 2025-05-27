@@ -1,17 +1,39 @@
 <?php
-  // memanggil folder auth
-  require_once 'auth/config.php';
-  include 'auth/title.php';
-  require_once 'auth/function.php';
-  session_start();
+// memanggil folder auth
+require_once 'auth/config.php';
+include 'auth/title.php';
+require_once 'auth/function.php';
+session_start();
+if (!isset($_SESSION['user'])) {
+  header("Location: login.php");
+  exit;
+}
+$id_user = $_SESSION['user']['id_user'];
+$stmtUser = $pdo->query("SELECT role, status_vote FROM users WHERE id_user = $id_user");
+$userData = $stmtUser->fetch();
 
-  $totalPemilih = countWhere($pdo, 'users', 'role', 'user');
-  $totalSudahMemilih = countWhere($pdo, 'users', 'role', 'status_vote', 'sudah');
-  $totalBelumMemilih = countWhere($pdo, 'users', 'role', 'user', 'status_vote', 'belum');
-  $totalKandidat = countRows($pdo, 'calon');
-  $totalSuaraMasuk = countRows($pdo, 'vote_logs');
+$role = $userData['role'];
+$status_vote = $userData['status_vote'];
+$bolehLihat = ($role === 'admin' || $status_vote === 'sudah');
 
-  $partisipasi = $totalPemilih > 0 ? round(($totalSudahMemilih / $totalPemilih) * 100, 2) : 0;
+$labels = [];
+$data = [];
+
+$stmt = $pdo->query("SELECT nama_calon, jumlah_suara FROM calon");
+while ($row = $stmt->fetch()) {
+  $labels[] = $row['nama_calon'];
+  $data[] = $row['jumlah_suara'];
+}
+
+$totalPemilih       = countWhere($pdo, 'users', 'role', 'user');
+$totalSudahMemilih  = countWhereMulti($pdo, 'users', ['role' => 'user', 'status_vote' => 'sudah']);
+$totalBelumMemilih  = countWhereMulti($pdo, 'users', ['role' => 'user', 'status_vote' => 'belum']);
+$totalKandidat      = countRows($pdo, 'calon');
+$totalSuaraMasuk    = countRows($pdo, 'vote_logs');
+
+
+$partisipasi = $totalPemilih > 0 ? round(($totalSudahMemilih / $totalPemilih) * 100, 2) : 0;
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +56,7 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="css/vertical-layout-light/style.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="images/favicon.png" />
+  <link rel="shortcut icon" href="logo web/3.png" />
   <!-- icon -->
   <link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css">
 </head>
@@ -44,8 +66,7 @@
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5 <?= $current_page == 'index.php' ? 'active' : ''; ?>" href="index.php"><img src="images/logo.svg" class="mr-2" alt="logo" /></a>
-        <a class="navbar-brand brand-logo-mini <?= $current_page == 'index.php' ? 'active' : ''; ?>" href="index.php"><img src="images/logo-mini.svg" alt="logo" /></a>
+        <a class="navbar-brand brand-logo mr-5 <?= $current_page == 'index.php' ? 'active' : ''; ?>" href="index.php"><img src="logo web/3.png" class="mr-2" alt="logo" style="height : 50px;"/></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -95,7 +116,7 @@
                     <div class="card card-tale">
                       <div class="card-body">
                         <p class="mb-4">Total Pemilih Terdaftar</p>
-                        <p class="fs-30 mb-2"><?= $totalPemilih;?> </p>
+                        <p class="fs-30 mb-2"><?= $totalPemilih; ?> </p>
                         <p>Data semua pemilih</p>
                       </div>
                     </div>
@@ -104,7 +125,7 @@
                     <div class="card card-dark-blue">
                       <div class="card-body">
                         <p class="mb-4">Total Sudah Memilih</p>
-                        <p class="fs-30 mb-2"> <?= $totalSudahMemilih;?> </p>
+                        <p class="fs-30 mb-2"> <?= $totalSudahMemilih; ?> </p>
                         <p>Jumlah yang sudah memberikan suara</p>
                       </div>
                     </div>
@@ -115,16 +136,17 @@
                     <div class="card card-light-blue">
                       <div class="card-body">
                         <p class="mb-4">Belum Memilih</p>
-                        <p class="fs-30 mb-2"><?= $totalBelumMemilih ;?></p>
-                        <p>Masih menunggu memilih</p>
+                        <p class="fs-30 mb-2"><?= $totalBelumMemilih; ?></p>
+                        <p><?= $totalBelumMemilih > 0 ? 'Masih menunggu memilih' : 'Semua sudah memilih'; ?></p>
                       </div>
                     </div>
                   </div>
+
                   <div class="col-md-6 stretch-card transparent">
                     <div class="card card-light-danger">
                       <div class="card-body">
                         <p class="mb-4">Jumlah Kandidat</p>
-                        <p class="fs-30 mb-2"><?= $totalKandidat ;?> </p>
+                        <p class="fs-30 mb-2"><?= $totalKandidat; ?> </p>
                         <p>Calon yang tersedia</p>
                       </div>
                     </div>
@@ -135,7 +157,7 @@
                     <div class="card card-light-warning bg-warning">
                       <div class="card-body">
                         <p class="mb-4">Total Suara Masuk</p>
-                        <p class="fs-30 mb-2"> <?= $totalSuaraMasuk ;?> </p>
+                        <p class="fs-30 mb-2"> <?= $totalSuaraMasuk; ?> </p>
                         <p>Akumulasi semua suara</p>
                       </div>
                     </div>
@@ -144,7 +166,7 @@
                     <div class="card card-light-success bg-success">
                       <div class="card-body">
                         <p class="mb-4">Persentase Partisipasi</p>
-                        <p class="fs-30 mb-2"><?= $partisipasi; ?> </p>
+                        <p class="fs-30 mb-2"><?= $partisipasi; ?> %</p>
                         <p>Partisipasi pemilih</p>
                       </div>
                     </div>
@@ -154,16 +176,41 @@
 
             <?php endif; ?>
             <!-- Bagian Kanan: Pie Chart -->
-            <div class="col-lg-6 grid-margin grid-margin-lg-0 stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Pie chart</h4>
-                  <canvas id="pieChart"></canvas>
+            <?php if ($bolehLihat): ?>
+              <div class="col-lg-6 grid-margin grid-margin-lg-0 stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Hasil Voting</h4>
+                    <div class="d-flex flex-wrap mb-3" style="gap: 1rem;">
+                      <?php
+                      $colors = [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(153, 102, 255, 0.7)',
+                        'rgba(255, 159, 64, 0.7)'
+                      ];
+
+                      foreach ($labels as $index => $label): ?>
+                        <div class="card shadow-sm border-0" style="width: 12rem; margin-bottom: 0.5rem;">
+                          <div class="card-body py-2 px-3 d-flex align-items-center">
+                            <div class="rounded-circle" style="width: 15px; height: 15px; background-color: <?= $colors[$index]; ?>;"></div>
+                            <strong class="ms-2">Kandidat <?= htmlspecialchars($label); ?></strong>
+                          </div>
+                        </div>
+                      <?php endforeach; ?>
+                    </div>
+                    <canvas id="pieChart"></canvas>
+                  </div>
                 </div>
               </div>
-            </div>
+            <?php else: ?>
+              <!-- Jika belum memilih -->
+              <div class="alert alert-warning col-lg-6">Anda belum diberi akses untuk melihat hasil voting.</div>
+            <?php endif; ?>
           </div>
-          
+
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
@@ -180,7 +227,7 @@
   <script src="vendors/js/vendor.bundle.base.js"></script>
   <!-- endinject -->
   <!-- Plugin js for this page -->
-  <script src="vendors/chart.js/Chart.min.js"></script>
+  <!-- <script src="vendors/chart.js/Chart.min.js"></script> -->
   <!-- <script src="vendors/datatables.net/jquery.dataTables.js"></script> -->
   <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
   <script src="js/dataTables.select.min.js"></script>
@@ -226,6 +273,45 @@
       }
     });
   </script> -->
+
+  <!-- Chart JS Script -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const ctx = document.getElementById('pieChart').getContext('2d');
+    const pieChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        datasets: [{
+          label: 'Jumlah Suara',
+          data: <?= json_encode($data); ?>,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.7)',
+            'rgba(54, 162, 235, 0.7)',
+            'rgba(255, 206, 86, 0.7)',
+            'rgba(75, 192, 192, 0.7)',
+            'rgba(153, 102, 255, 0.7)',
+            'rgba(255, 159, 64, 0.7)'
+          ],
+          borderColor: [
+            'rgba(255, 255, 255, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+          },
+          title: {
+            display: true,
+            text: 'Distribusi Suara Kandidat'
+          }
+        }
+      }
+    });
+  </script>
 </body>
 
 </html>
